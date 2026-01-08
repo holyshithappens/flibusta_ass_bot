@@ -1,0 +1,262 @@
+# FlibustaUserAssistBot Configuration
+# Copy this file to config/bot_config.yaml and customize as needed
+
+# ============================================
+# Bot Information
+# ============================================
+bot:
+  # Bot display name
+  name: "FlibustaUserAssistBot"
+  
+  # Bot username (without @)
+  username: "@FlibustaAssistantBot"
+  
+  # Target bot username (the bot we're assisting)
+  target_bot_username: "@FlibustaRuBot"
+  
+  # Bot version
+  version: "0.1.0"
+
+# ============================================
+# Telegram Configuration
+# ============================================
+telegram:
+  # Group chat IDs where bot should respond
+  # Leave empty [] to respond in all groups
+  # Example: [-1001234567890, -1000987654321]
+  group_chat_ids: []
+  
+  # Admin user IDs (for admin commands)
+  # Example: [123456789, 987654321]
+  admin_user_ids: []
+  
+  # Enable bot to respond in private messages
+  allow_private_messages: false
+  
+  # Enable bot to respond in channel comments
+  monitor_channel_comments: true
+
+# ============================================
+# OpenRouter AI Configuration
+# ============================================
+openrouter:
+  # AI model to use
+  # Recommended: nex-agi/deepseek-v3.1-nex-n1:free (free tier)
+  # Alternative: deepseek/deepseek-chat:free
+  model: "nex-agi/deepseek-v3.1-nex-n1:free"
+  
+  # Temperature (0.0 - 2.0)
+  # Lower = more deterministic, Higher = more creative
+  temperature: 0.7
+  
+  # Maximum tokens in response
+  max_tokens: 500
+  
+  # API timeout in seconds
+  timeout: 30
+  
+  # Enable response caching
+  enable_caching: true
+  
+  # Cache TTL in seconds (3600 = 1 hour)
+  cache_ttl: 3600
+
+# ============================================
+# AI Assistant Configuration
+# ============================================
+ai_assistant:
+  # Number of previous messages to include in context
+  context_window_size: 10
+  
+  # Include message history in context
+  include_history: true
+  
+  # Include user mentions in context
+  include_mentions: true
+  
+  # Include FlibustaRuBot responses in context
+  include_target_bot_responses: true
+  
+  # Maximum context length in characters
+  max_context_length: 3000
+  
+  # Enable AI instruction hot-reload
+  hot_reload_instructions: true
+
+# ============================================
+# Button Generation Configuration
+# ============================================
+buttons:
+  # Maximum number of buttons per row (1-4)
+  buttons_per_row: 2
+  
+  # Maximum total buttons
+  max_buttons: 6
+  
+  # Button types to generate:
+  # - command: Direct Flibusta commands (/search, /get, etc.)
+  # - search: Pre-filled search queries
+  # - navigation: Common navigation actions
+  enabled_types:
+    - command
+    - search
+    - navigation
+  
+  # Button priority order (higher = shown first)
+  button_priority:
+    command: 3
+    search: 2
+    navigation: 1
+
+# ============================================
+# Logging Configuration
+# ============================================
+logging:
+  # Log level: DEBUG, INFO, WARNING, ERROR, CRITICAL
+  level: "INFO"
+  
+  # Log file path
+  file_path: "logs/bot.log"
+  
+  # Maximum log file size in MB
+  max_size_mb: 10
+  
+  # Number of backup log files to keep
+  backup_count: 5
+  
+  # Log format
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  
+  # Enable console output
+  console_output: true
+  
+  # Enable file output
+  file_output: true
+  
+  # Enable structured logging (JSON format)
+  structured: false
+
+# ============================================
+# Hot Reload Configuration
+# ============================================
+hot_reload:
+  # Enable hot-reload of configuration files
+  enabled: true
+  
+  # Check interval for file changes in seconds
+  check_interval: 5
+  
+  # Files to watch for changes
+  watch_files:
+    - "config/bot_config.yaml"
+    - "config/ai_instruction.md"
+
+# ============================================
+# Performance Configuration
+# ============================================
+performance:
+  # Enable request rate limiting
+  rate_limiting_enabled: true
+  
+  # Maximum requests per minute per user
+  max_requests_per_minute: 10
+  
+  # Enable response caching
+  response_caching_enabled: true
+  
+  # Cache TTL in seconds
+  cache_ttl: 3600
+  
+  # Connection pool size
+  connection_pool_size: 10
+
+# ============================================
+# Security Configuration
+# ============================================
+security:
+  # Verify Telegram webhook data
+  verify_webhook: true
+  
+  # Rate limiting per user
+  user_rate_limit: 10
+  
+  # Rate limiting per chat
+  chat_rate_limit: 30
+  
+  # Block suspicious requests
+  block_suspicious: true
+  
+  # Log security events
+  log_security_events: true
+
+# ============================================
+# Message Processing Configuration
+# ============================================
+message_processing:
+  # Process messages concurrently
+  concurrent_processing: true
+  
+  # Maximum concurrent messages
+  max_concurrent: 5
+  
+  # Retry failed message processing
+  retry_failed: true
+  
+  # Maximum retry attempts
+  max_retries: 3
+  
+  # Retry delay in seconds
+  retry_delay: 2
+
+# ============================================
+# Development & Debugging
+# ============================================
+development:
+  # Enable debug mode
+  debug: false
+  
+  # Enable verbose logging
+  verbose: false
+  
+  # Mock AI responses (for testing)
+  mock_ai_responses: false
+  
+  # Log all incoming updates
+  log_all_updates: false
+  
+  # Enable test mode
+  test_mode: false
+
+# ============================================
+# Feature Flags
+# ============================================
+features:
+  # Enable group message handling
+  group_messages: true
+  
+  # Enable channel comment handling
+  channel_comments: true
+  
+  # Enable private message handling
+  private_messages: false
+  
+  # Enable inline queries
+  inline_queries: false
+  
+  # Enable admin commands
+  admin_commands: true
+  
+  # Enable statistics collection
+  statistics: false
+
+# ============================================
+# Notes
+# ============================================
+# 1. This file supports hot-reload (changes take effect without restart)
+# 2. Use YAML syntax correctly (indentation matters)
+# 3. Comments start with #
+# 4. Use quotes for strings with special characters
+# 5. Arrays use - prefix
+# 6. Boolean values: true/false (lowercase)
+# 7. Numbers don't need quotes
+# 8. Restart bot after major configuration changes

@@ -1,0 +1,140 @@
+version: '3.8'
+
+services:
+  # Main bot service
+  flibusta-assist-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BUILD_DATE: ${BUILD_DATE:-2026-01-08}
+        VCS_REF: ${VCS_REF:-local}
+        VERSION: ${VERSION:-0.1.0}
+    container_name: flibusta-assist-bot
+    restart: unless-stopped
+    
+    # Environment variables
+    env_file:
+      - .env
+    
+    # Volume mounts for configuration and logs
+    volumes:
+      - ./config:/app/config:ro
+      - ./logs:/app/logs
+      - ./src:/app/src:ro
+    
+    # Network mode
+    network_mode: bridge
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys; sys.exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+    
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    
+    # Environment variables (can override .env file)
+    environment:
+      - TZ=Europe/Moscow
+      - CONFIG_PATH=/app/config/bot_config.yaml
+      - AI_INSTRUCTION_PATH=/app/config/ai_instruction.md
+      - LOG_FILE_PATH=/app/logs/bot.log
+
+  # Development service (with mounted source code and hot reload)
+  flibusta-assist-bot-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BUILD_DATE: ${BUILD_DATE:-2026-01-08}
+        VCS_REF: ${VCS_REF:-local}
+        VERSION: ${VERSION:-0.1.0-dev}
+    container_name: flibusta-assist-bot-dev
+    restart: unless-stopped
+    profiles:
+      - dev
+    
+    # Environment variables
+    env_file:
+      - .env
+      - .env.dev  # Optional development environment file
+    
+    # Volume mounts with full access for development
+    volumes:
+      - ./config:/app/config
+      - ./logs:/app/logs
+      - ./src:/app/src
+      - ./tests:/app/tests
+      - ./pyproject.toml:/app/pyproject.toml
+    
+    # Network mode
+    network_mode: bridge
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys; sys.exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    
+    # Resource limits (more generous for development)
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 1G
+        reservations:
+          cpus: '1.0'
+          memory: 512M
+    
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    
+    # Environment variables for development
+    environment:
+      - TZ=Europe/Moscow
+      - CONFIG_PATH=/app/config/bot_config.yaml
+      - AI_INSTRUCTION_PATH=/app/config/ai_instruction.md
+      - LOG_FILE_PATH=/app/logs/bot.log
+      - DEBUG=true
+      - VERBOSE=true
+      - HOT_RELOAD_ENABLED=true
+    
+    # Command for development (with auto-restart on code changes)
+    command: >
+      sh -c "python -m src.bot.main"
+
+# Networks
+networks:
+  default:
+    driver: bridge
+
+# Volumes (for persistent data if needed in future)
+volumes:
+  # logs:
+  #   driver: local
+  # config:
+  #   driver: local
