@@ -9,8 +9,8 @@ import asyncio
 import hashlib
 import json
 import time
-from typing import Any, Dict, List, Optional, Literal
 from datetime import datetime, timedelta
+from typing import Any, Dict, List, Literal, Optional
 
 import aiohttp
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
@@ -132,8 +132,8 @@ class OpenRouterClient:
             self._cleanup_task = asyncio.create_task(self._cleanup_cache_loop())
 
         self.logger.info(
-                    f"OpenRouter client started - model: {self.model}, timeout: {self.timeout}, caching: {self.enable_caching}"
-                )
+            f"OpenRouter client started - model: {self.model}, timeout: {self.timeout}, caching: {self.enable_caching}"
+        )
 
     async def close(self) -> None:
         """Close the client and cleanup resources."""
@@ -214,15 +214,14 @@ class OpenRouterClient:
         if cache_key in self._in_flight:
             self.logger.debug(f"Waiting for duplicate request - cache_key: {cache_key[:16]}")
             try:
-                return await self._in_flight[cache_key]
+                result = await self._in_flight[cache_key]
+                return str(result)  # Ensure type safety
             except asyncio.CancelledError:
                 # If cancelled, remove from in-flight and proceed normally
                 self._in_flight.pop(cache_key, None)
 
         # Create new request task
-        task = asyncio.create_task(
-            self._make_request_with_retry(request_data, cache_key)
-        )
+        task = asyncio.create_task(self._make_request_with_retry(request_data, cache_key))
         self._in_flight[cache_key] = task
 
         try:
@@ -293,9 +292,7 @@ class OpenRouterClient:
         self._cache[cache_key] = entry
         self.logger.debug(f"Added to cache - cache_key: {cache_key[:16]}, tokens: {tokens}")
 
-    async def _make_request_with_retry(
-        self, request: OpenRouterRequest, cache_key: str
-    ) -> str:
+    async def _make_request_with_retry(self, request: OpenRouterRequest, cache_key: str) -> str:
         """
         Make HTTP request with retry logic.
 
@@ -333,8 +330,8 @@ class OpenRouterClient:
                 if should_retry:
                     delay = self.retry_delay * (2**attempt)  # Exponential backoff
                     self.logger.warning(
-                                f"Request failed, retrying - attempt: {attempt + 1}/{self.max_retries}, delay: {delay}s, error: {str(e)}"
-                            )
+                        f"Request failed, retrying - attempt: {attempt + 1}/{self.max_retries}, delay: {delay}s, error: {str(e)}"
+                    )
                     await asyncio.sleep(delay)
                 else:
                     self.logger.error(f"Request failed, not retrying - error: {str(e)}")
@@ -342,8 +339,8 @@ class OpenRouterClient:
 
         # All retries exhausted
         self.logger.error(
-                    f"All retry attempts exhausted - max_retries: {self.max_retries}, error: {str(last_exception)}"
-                )
+            f"All retry attempts exhausted - max_retries: {self.max_retries}, error: {str(last_exception)}"
+        )
         raise last_exception or Exception("Unknown error occurred")
 
     def _should_retry(self, exception: Exception, attempt: int) -> bool:
@@ -396,19 +393,17 @@ class OpenRouterClient:
         url = f"{OPENROUTER_API_BASE_URL}/chat/completions"
 
         self.logger.debug(
-                    f"Making API request - model: {request.model}, messages_count: {len(request.messages)}, temperature: {request.temperature}, max_tokens: {request.max_tokens}"
-                )
+            f"Making API request - model: {request.model}, messages_count: {len(request.messages)}, temperature: {request.temperature}, max_tokens: {request.max_tokens}"
+        )
 
         try:
-            async with self._session.post(
-                url, json=request.model_dump()
-            ) as response:
+            async with self._session.post(url, json=request.model_dump()) as response:
                 # Check for HTTP errors
                 if response.status != 200:
                     text = await response.text()
                     self.logger.error(
-                                f"API returned error status - status: {response.status}, response: {text[:500]}"
-                            )
+                        f"API returned error status - status: {response.status}, response: {text[:500]}"
+                    )
                     response.raise_for_status()
 
                 # Parse response
@@ -422,8 +417,8 @@ class OpenRouterClient:
                     raise ValueError("No response text in API response")
 
                 self.logger.debug(
-                            f"API request successful - model: {openrouter_response.model}, response_length: {len(response_text)}"
-                        )
+                    f"API request successful - model: {openrouter_response.model}, response_length: {len(response_text)}"
+                )
 
                 return response_text
 

@@ -71,7 +71,6 @@ graph TB
     BG --> HM
     HM --> FBR
     
-    CFG --> ENV
     CFG --> YAML
     CFG --> AI_INST
     CFG --> AIS
@@ -92,19 +91,20 @@ graph TB
 
 #### Config Manager (`config.py`)
 **Responsibilities:**
-- Load and validate configuration from multiple sources
+- Load and validate configuration from multiple sources at startup
 - Provide thread-safe access to configuration
-- Support hot-reloading of YAML and instruction files
 - Type-safe configuration using Pydantic models
 
 **Key Features:**
-- Environment variable loading via `python-dotenv`
+- Environment variable loading via `os.getenv()`
 - YAML configuration parsing via `PyYAML`
-- File watching with `watchdog` for hot-reload
+- .env file support for local development (via `source .env`)
 - Singleton pattern for global access
+- **Pydantic V2** for type-safe configuration with validation
+- Runtime type checking and automatic conversion
 
 **Configuration Sources:**
-1. `.env` file - Sensitive data (API tokens)
+1. Environment variables (via `os.getenv()`) - Sensitive data (API tokens)
 2. `bot_config.yaml` - Bot behavior settings
 3. `ai_instruction.md` - AI assistant instructions
 
@@ -125,7 +125,7 @@ graph TB
 #### Type Definitions (`types.py`)
 **Responsibilities:**
 - Define type aliases and data structures
-- Pydantic models for validation
+- **Pydantic V2 models** for validation
 - Telegram API type definitions
 - OpenRouter API request/response models
 
@@ -176,8 +176,7 @@ graph TB
 ```
 
 **Caching Strategy:**
-- Cache AI instruction file content
-- Reload on file modification (watchdog)
+- Cache AI instruction file content at startup
 - Thread-safe access to instruction cache
 
 #### Message Analyzer (`message_analyzer.py`)
@@ -242,13 +241,26 @@ graph TB
 
 ## 🔧 Configuration Architecture
 
-### Environment Variables (`.env`)
+### Environment Variables
+
+**For Local Development:**
+Create a `.env` file in the project root:
 ```bash
 TELEGRAM_BOT_TOKEN=your_bot_token
 OPENROUTER_API_KEY=your_api_key
 LOG_LEVEL=INFO
 CONFIG_PATH=config/bot_config.yaml
 AI_INSTRUCTION_PATH=config/ai_instruction.md
+```
+
+Load with: `source .env` before running the bot
+
+**For Production (Docker):**
+Environment variables are passed via `env_file` in `docker-compose.yml`:
+```yaml
+# Environment variables
+env_file:
+  - .env
 ```
 
 ### Bot Configuration (`bot_config.yaml`)
@@ -274,9 +286,8 @@ logging:
   max_size_mb: 10
   backup_count: 5
   
-hot_reload:
-  enabled: true
-  check_interval: 5
+# Configuration loaded only at startup
+# Restart bot to apply changes
 ```
 
 ### AI Instruction File (`ai_instruction.md`)
@@ -286,6 +297,8 @@ Markdown file containing system prompt for the AI assistant with:
 - Flibusta command examples
 - Button generation rules
 - Conversation flow patterns
+
+**Note:** All configuration files are loaded once at bot startup. Restart the bot to apply any configuration changes.
 
 ---
 
@@ -336,20 +349,26 @@ class ChatContext(TypedDict):
 ### AIResponse
 ```python
 class AIResponse(BaseModel):
+    """Structured AI response using Pydantic V2."""
+    model_config = ConfigDict(extra='forbid')  # Strict validation
+    
     text: str
     suggestions: List[str]
     commands: List[str]
-    confidence: float
+    confidence: float = Field(ge=0.0, le=1.0)  # 0.0 to 1.0
     model_used: str
 ```
 
 ### ButtonCommand
 ```python
 class ButtonCommand(BaseModel):
+    """Button command with Pydantic V2 validation."""
+    model_config = ConfigDict(extra='forbid')
+    
     text: str
     command: str
-    type: str  # "command" | "search" | "navigation"
-    priority: int
+    type: Literal["command", "search", "navigation"]
+    priority: int = Field(ge=1, le=10)  # 1-10 priority range
 ```
 
 ---
@@ -357,8 +376,8 @@ class ButtonCommand(BaseModel):
 ## 🔐 Security Considerations
 
 ### API Key Management
-- Store sensitive keys in `.env` file (excluded from git)
-- Use environment-specific `.env` files
+- Store sensitive keys in environment variables
+- Use production-specific environment configurations
 - Rotate API keys regularly
 - Validate token permissions
 
@@ -478,6 +497,13 @@ class ButtonCommand(BaseModel):
 - Redis integration
 - PostgreSQL for logging
 - Load balancing
+- Microservices architecture
+
+---
+
+**Architecture Version:** 1.0  
+**Last Updated:** 2026-01-08  
+**Maintainer:** Development Team- Load balancing
 - Microservices architecture
 
 ---
