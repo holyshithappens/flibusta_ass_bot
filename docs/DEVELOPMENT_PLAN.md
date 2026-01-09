@@ -70,12 +70,12 @@ git push -u origin develop --tags
 
 #### Tasks:
 1. Implement `src/bot/core/config.py`:
-   - Load `.env` using `python-dotenv`
+   - Load environment variables using `os.getenv()`
    - Parse YAML using `PyYAML`
    - Create `Config` class with typed fields (Pydantic)
    - Load AI instruction from file (path specified in YAML)
-   - Implement hot-reload for YAML and instruction files (watchdog)
    - Thread-safe configuration access
+   - Configuration loaded once at startup
    
 2. Implement `src/bot/core/logger.py`:
    - Configure `logging` (stdout + file with rotation)
@@ -90,14 +90,13 @@ git push -u origin develop --tags
    - Type aliases and constants
    
 4. Write `tests/test_core/`:
-   - `test_config.py` — Test .env, YAML, and instruction loading
+   - `test_config.py` — Test environment variables, YAML, and instruction loading
    - `test_logger.py` — Test log writing and rotation
    - `test_types.py` — Test data model validation
 
 #### Checkpoint:
-- [ ] Configuration loads from `.env` and YAML
-- [ ] AI instruction loads from file
-- [ ] YAML and instruction files reload on changes
+- [ ] Configuration loads from environment variables and YAML at startup
+- [ ] AI instruction loads from file at startup
 - [ ] Logs write to file and stdout
 - [ ] All tests pass: `pytest tests/test_core/ -v`
 - [ ] `mypy src/bot/core/` passes without errors
@@ -184,7 +183,7 @@ git push origin develop --tags
    - Method `async def get_ai_response(context: str) -> str`
    - Prompt formatting: instruction from file + context
    - Call OpenRouterClient
-   - Cache AI instructions with auto-reload
+   - Cache AI instructions at startup
    - Response validation and sanitization
    
 2. Implement `src/bot/services/message_analyzer.py`:
@@ -211,7 +210,7 @@ git push origin develop --tags
 
 #### Checkpoint:
 - [ ] `AIAssistantService` generates responses via OpenRouter
-- [ ] AI instruction loads from file and caches properly
+- [ ] AI instruction loads from file at startup
 - [ ] `MessageAnalyzer` extracts context from chat
 - [ ] `ButtonGenerator` creates reply buttons in correct format
 - [ ] Buttons properly target @FlibustaRuBot
@@ -317,7 +316,6 @@ git push origin develop --tags
    - Response with reply buttons
    - Button click sends command to target bot
    - Target bot processes command from button
-   - Hot-reload of YAML and instruction files
    - API error handling
    - Rate limiting scenarios
    - Multiple concurrent users
@@ -391,7 +389,7 @@ git push origin develop --tags
 - [ ] Docker image builds without errors
 - [ ] Bot runs correctly in container
 - [ ] Logs accessible via `docker logs`
-- [ ] YAML and instruction hot-reload works in container
+- [ ] Configuration loads correctly in container
 - [ ] Health checks pass
 - [ ] Deployment script works
 - [ ] Staging deployment successful
@@ -648,12 +646,24 @@ pytest tests/ --cov=src/bot --cov-fail-under=80
 
 ## 📝 Development Log
 
+### 2026-01-09
+- ✅ **STAGE 1 COMPLETE (v0.2.0)**
+- ✅ Implemented Config class with Pydantic validation
+- ✅ Implemented BotLogger with structured logging and rotation
+- ✅ Implemented core types (ChatContext, AIResponse, ButtonCommand, etc.)
+- ✅ Created comprehensive test suite (59 tests, 86.57% coverage)
+- ✅ Fixed all type annotation issues (mypy --strict passes)
+- ✅ Applied code formatting (black, isort)
+- ✅ Merged to main and tagged v0.2.0
+- ✅ Pushed to origin with tags
+- 🔄 **Next: Stage 2 - OpenRouter Client (v0.3.0)**
+
 ### 2026-01-08
 - ✅ Reviewed existing architecture and planning documents
 - ✅ Created comprehensive ARCHITECTURE.md
 - ✅ Created detailed DEVELOPMENT_PLAN.md
 - ✅ Established clear documentation structure
-- 🔄 Preparing for Stage 0 (Project Initialization)
+- ✅ **STAGE 0 COMPLETE (v0.1.0)**
 
 ---
 

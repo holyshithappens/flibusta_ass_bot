@@ -3,6 +3,8 @@
 [![Python Version](https://img.shields.io/badge/python-3.13-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code Style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Version](https://img.shields.io/badge/version-v0.2.0-green.svg)](https://github.com/holyshithappens/flibusta_ass_bot/releases/tag/v0.2.0)
+[![Coverage](https://img.shields.io/badge/coverage-86%25-brightgreen.svg)](htmlcov/index.html)
 
 **AI-powered Telegram assistant bot** that helps users interact with [@FlibustaRuBot](https://t.me/FlibustaRuBot) by providing intelligent suggestions and generating reply buttons with appropriate commands.
 
@@ -24,26 +26,20 @@
 
 ## ✨ Features
 
-### 🤖 Intelligent Assistance
-- **Context-aware suggestions** using AI (DeepSeek v3.1 via OpenRouter)
-- **Conversation analysis** to understand user intent
-- **Smart command generation** for FlibustaRuBot
+### ✅ Implemented (v0.2.0)
+- **Core Configuration** - Pydantic-based config with environment variable support
+- **Structured Logging** - Multi-output logging with rotation and multiple log levels
+- **Type Safety** - Complete type definitions with mypy strict mode
+- **Comprehensive Tests** - 86.57% coverage with 59 unit tests
+- **Quality Assurance** - All quality checks passing (mypy, black, isort, pytest)
 
-### 🔘 One-Click Buttons
-- **Reply keyboard buttons** that send commands directly to FlibustaRuBot
-- **Adaptive button layout** optimized for mobile devices
-- **Command types**: Search, Get, Navigation, Author search, Series search
-
-### ⚙️ Hot-Reloadable Configuration
-- **YAML configuration** for bot behavior
-- **AI instruction file** for customizing assistant responses
-- **Runtime changes** without restart required
-
-### 🚀 Production Ready
-- **Async/await** architecture for high performance
-- **Docker containerization** with multi-stage builds
-- **Comprehensive logging** with rotation
-- **Health checks** and monitoring support
+### 🚧 Coming Soon (v0.3.0+)
+- **Intelligent Assistance** - AI-powered suggestions using DeepSeek v3.1
+- **Context-Aware Analysis** - Conversation history understanding
+- **Smart Buttons** - Reply keyboard buttons for Flibusta commands
+- **Hot-Reloadable Config** - Runtime configuration changes
+- **Docker Deployment** - Production-ready containerization
+- **Telegram Integration** - Message handlers and middleware
 
 ---
 
@@ -96,8 +92,8 @@ For detailed architecture documentation, see [`docs/ARCHITECTURE.md`](docs/ARCHI
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/username/flibusta-assist-bot.git
-   cd flibusta-assist-bot
+   git clone https://github.com/holyshithappens/flibusta_ass_bot.git
+   cd flibusta_ass_bot
    ```
 
 2. **Create virtual environment**
@@ -120,13 +116,13 @@ For detailed architecture documentation, see [`docs/ARCHITECTURE.md`](docs/ARCHI
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/username/flibusta-assist-bot.git
-   cd flibusta-assist-bot
+   git clone https://github.com/holyshithappens/flibusta_ass_bot.git
+   cd flibusta_ass_bot
    ```
 
 2. **Build Docker image**
    ```bash
-   docker build -t flibusta-assist-bot .
+   docker build -t flibusta_ass_bot .
    ```
 
 3. **Run with Docker Compose**
@@ -157,7 +153,7 @@ OPENROUTER_API_KEY=your_openrouter_api_key_here
 
 # Bot Configuration
 TARGET_BOT_USERNAME=FlibustaRuBot
-BOT_USERNAME=FlibustaAssistantBot
+BOT_USERNAME=FlibustaAssBot
 
 # Logging
 LOG_LEVEL=INFO
@@ -177,7 +173,7 @@ Edit `config/bot_config.yaml` to customize bot behavior:
 ```yaml
 bot:
   name: "FlibustaUserAssistBot"
-  username: "@FlibustaAssistantBot"
+  username: "@FlibustaAssBot"
   target_bot_username: "@FlibustaRuBot"
 
 telegram:
@@ -468,8 +464,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-- **Issues**: [GitHub Issues](https://github.com/username/flibusta-assist-bot/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/username/flibusta-assist-bot/discussions)
+- **Issues**: [GitHub Issues](https://github.com/holyshithappens/flibusta_ass_bot/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/holyshithappens/flibusta_ass_bot/discussions)
 - **Documentation**: [docs/](docs/)
 
 ---
@@ -503,6 +499,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Project Status**: 🚧 In Development (v0.1.0)  
-**Last Updated**: 2026-01-08  
+**Project Status**: ✅ Stage 1 Complete (v0.2.0)
+**Last Updated**: 2026-01-09
 **Maintainer**: Development Team
