@@ -1,0 +1,105 @@
+"""
+Core module for FlibustaUserAssistBot.
+
+This module provides the foundational components for configuration,
+logging, and type definitions.
+"""
+
+from .config import (
+    AIAssistantConfig,
+    BotConfig,
+    ButtonsConfig,
+    Config,
+    DevelopmentConfig,
+    FeaturesConfig,
+    LoggingConfig,
+    OpenRouterConfig,
+    PerformanceConfig,
+    SecurityConfig,
+    TelegramConfig,
+    config,
+)
+from .logger import (
+    BotLogger,
+    get_global_logger,
+    get_logger,
+    setup_global_logger,
+)
+from .types import (
+    DEFAULT_AI_INSTRUCTION_PATH,
+    DEFAULT_CONFIG_PATH,
+    DEFAULT_LOG_LEVEL,
+    DEFAULT_LOG_PATH,
+    DEFAULT_MAX_TOKENS,
+    DEFAULT_TEMPERATURE,
+    DEFAULT_TIMEOUT,
+    LOG_LEVELS,
+    MAX_BUTTONS,
+    MAX_BUTTONS_PER_ROW,
+    MAX_CONTEXT_LENGTH,
+    MAX_MESSAGE_HISTORY,
+    MAX_SUGGESTIONS,
+    AIResponse,
+    BotInfo,
+    ButtonCommand,
+    ButtonGrid,
+    ChatContext,
+    ChatID,
+    CommandString,
+    MessageHistory,
+    MessageID,
+    OpenRouterRequest,
+    OpenRouterResponse,
+    TelegramMessage,
+    UserID,
+)
+
+__all__ = [
+    # Types
+    "TelegramMessage",
+    "ChatContext",
+    "AIResponse",
+    "ButtonCommand",
+    "OpenRouterRequest",
+    "OpenRouterResponse",
+    "BotInfo",
+    # Type aliases
+    "ChatID",
+    "UserID",
+    "MessageID",
+    "CommandString",
+    "MessageHistory",
+    "ButtonGrid",
+    # Constants
+    "MAX_SUGGESTIONS",
+    "MAX_BUTTONS",
+    "MAX_BUTTONS_PER_ROW",
+    "MAX_CONTEXT_LENGTH",
+    "MAX_MESSAGE_HISTORY",
+    "DEFAULT_TEMPERATURE",
+    "DEFAULT_MAX_TOKENS",
+    "DEFAULT_TIMEOUT",
+    "DEFAULT_LOG_LEVEL",
+    "LOG_LEVELS",
+    "DEFAULT_CONFIG_PATH",
+    "DEFAULT_AI_INSTRUCTION_PATH",
+    "DEFAULT_LOG_PATH",
+    # Logger
+    "BotLogger",
+    "get_logger",
+    "setup_global_logger",
+    "get_global_logger",
+    # Config
+    "Config",
+    "config",
+    "OpenRouterConfig",
+    "TelegramConfig",
+    "AIAssistantConfig",
+    "ButtonsConfig",
+    "LoggingConfig",
+    "PerformanceConfig",
+    "SecurityConfig",
+    "DevelopmentConfig",
+    "FeaturesConfig",
+    "BotConfig",
+]
