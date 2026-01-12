@@ -5,7 +5,7 @@ This module provides handlers for processing comments on channel posts,
 providing context-aware suggestions, and generating reply buttons.
 """
 
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 from aiogram import Router, F
 from aiogram.types import Message, ReplyKeyboardMarkup
 

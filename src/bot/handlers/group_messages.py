@@ -6,7 +6,7 @@ and generating AI-powered responses with reply buttons.
 """
 
 import asyncio
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 from aiogram import Router, F
 from aiogram.types import Message, ReplyKeyboardMarkup
 from aiogram.filters import Command

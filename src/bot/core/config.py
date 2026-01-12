@@ -33,6 +33,7 @@ from .types import (
 class OpenRouterConfig(BaseModel):
     """OpenRouter AI API configuration."""
 
+    api_key: str = Field(..., description="OpenRouter API key from environment")
     model: str = Field(
         default="nex-agi/deepseek-v3.1-nex-n1:free", description="AI model identifier"
     )
@@ -54,6 +55,7 @@ class OpenRouterConfig(BaseModel):
 class TelegramConfig(BaseModel):
     """Telegram bot configuration."""
 
+    bot_token: str = Field(..., description="Telegram bot token from environment")
     group_chat_ids: list = Field(
         default_factory=list, description="List of group chat IDs where bot should respond"
     )

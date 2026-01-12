@@ -115,7 +115,7 @@ class FlibustaUserAssistBot:
         """
         Initialize aiogram Bot and Dispatcher.
         """
-        # Get Telegram bot token from environment variables
+        # Get Telegram bot token from config (loaded from environment)
         telegram_token = self.config.telegram.bot_token
         if not telegram_token:
             raise ValueError("TELEGRAM_BOT_TOKEN not configured in environment variables")
@@ -136,6 +136,7 @@ class FlibustaUserAssistBot:
         Initialize all bot services.
         """
         # Initialize OpenRouter client
+        # Get OpenRouter API key from config (loaded from environment)
         openrouter_api_key = self.config.openrouter.api_key
         if not openrouter_api_key:
             raise ValueError("OPENROUTER_API_KEY not configured in environment variables")
