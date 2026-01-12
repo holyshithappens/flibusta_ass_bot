@@ -167,17 +167,28 @@ graph TB
 - Format prompts using instructions from file
 - Cache and reload AI instructions dynamically
 - Handle AI response errors gracefully
+- Parse AI responses into structured format with commands, suggestions, and search queries
+- Sanitize responses for Telegram compatibility
 
 **Prompt Engineering:**
 ```
 [System Instruction from ai_instruction.md]
-[Conversation Context]
+[Current Context: Chat ID, User ID, Message]
+[Conversation History (last N messages)]
 [User Message]
 ```
 
 **Caching Strategy:**
 - Cache AI instruction file content at startup
 - Thread-safe access to instruction cache
+- Support for multiple AI models via environment variable (OPENROUTER_MODEL)
+
+**Response Parsing:**
+- Extracts commands (format: `/command`)
+- Extracts suggestions (format: `[suggestion text]`)
+- Extracts search queries (format: `<code>query text</code>`)
+- Categorizes content for button generation
+- Default confidence level: 0.95
 
 #### Message Analyzer (`message_analyzer.py`)
 **Responsibilities:**
@@ -185,12 +196,21 @@ graph TB
 - Retrieve message history for context building
 - Filter relevant messages for AI analysis
 - Build context strings for AI prompts
+- Validate context length and quality
+- Determine chat type (private/group/channel)
 
 **Context Building:**
-- Last 10 messages in the chat
+- Last N messages in the chat (configurable context_window_size)
 - User mentions and replies
 - Message timestamps and authors
 - FlibustaRuBot responses
+- Time-based filtering (default: last 24 hours)
+- Configurable inclusion of target bot responses and mentions
+
+**Context Validation:**
+- Maximum context length enforcement
+- Required field validation (chat_id, user_id, message_text)
+- Length-based rejection for oversized contexts
 
 #### Button Generator (`button_generator.py`)
 **Responsibilities:**
@@ -198,16 +218,24 @@ graph TB
 - Generate Telegram reply keyboard markup
 - Format buttons for FlibustaRuBot compatibility
 - Handle button layout and organization
+- Validate button layout constraints
+- Categorize buttons by type
 
 **Button Format:**
 - **Commands**: `/command@FlibustaRuBot`
 - **Requests**: `@FlibustaRuBot request_text`
-- **Layout**: 2-3 buttons per row (adaptive)
+- **Layout**: 2-3 buttons per row (adaptive, configurable)
 
 **Button Types:**
-1. **Command Buttons** - Direct Flibusta commands
-2. **Search Buttons** - Pre-filled search queries
-3. **Navigation Buttons** - Common navigation actions
+1. **Command Buttons** - Direct Flibusta commands (starting with `/`)
+2. **Reply Buttons** - Suggestions and options (format: `[text]`)
+3. **Search Buttons** - Pre-filled search queries (format: `<code>text</code>`)
+
+**Layout Validation:**
+- Maximum 5 rows per keyboard
+- Maximum 3 buttons per row
+- Configurable buttons_per_row and max_buttons limits
+- Automatic categorization and row separation by button type
 
 ---
 
@@ -508,6 +536,6 @@ class ButtonCommand(BaseModel):
 
 ---
 
-**Architecture Version:** 1.0  
-**Last Updated:** 2026-01-08  
+**Architecture Version:** 1.1
+**Last Updated:** 2026-01-12
 **Maintainer:** Development Team

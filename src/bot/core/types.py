@@ -89,6 +89,9 @@ class AIResponse(BaseModel):
     commands: List[str] = Field(
         default_factory=list, description="List of commands for reply buttons"
     )
+    search_queries: List[str] = Field(
+        default_factory=list, description="List of search queries (code-formatted text)"
+    )
     confidence: float = Field(
         default=1.0, ge=0.0, le=1.0, description="Confidence score of the AI response"
     )

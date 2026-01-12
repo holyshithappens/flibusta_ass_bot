@@ -9,19 +9,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Planned for v0.3.0
-- OpenRouter client integration
-- Async HTTP requests with aiohttp
-- Error handling and retry logic
-- Request/response typing
-- Client test suite
+### Planned for v0.4.0
+- Telegram handlers and middleware
+- Integration testing
+- Docker deployment setup
+- Documentation completion
 
-### Planned for Future Releases
-- Services layer development (v0.4.0)
-- Telegram handlers and middleware (v0.5.0)
-- Integration testing (v0.6.0)
-- Docker deployment setup (v0.7.0)
-- Documentation completion (v0.8.0)
+### Completed in v0.3.0 - 2026-01-12
+- OpenRouter client integration ✅
+- Async HTTP requests with aiohttp ✅
+- Error handling and retry logic ✅
+- Request/response typing ✅
+- Client test suite ✅
+
+### Completed in v0.4.0 - 2026-01-12
+- AIAssistantService for AI interactions ✅
+- MessageAnalyzer for context extraction ✅
+- ButtonGenerator for reply keyboards ✅
+- Service layer tests ✅
+- FlibustaRuBot integration format ✅
 
 ---
 
@@ -161,5 +167,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-**Changelog Maintainer:** Development Team  
-**Last Updated:** 2026-01-08
+**Changelog Maintainer:** Development Team
+**Last Updated:** 2026-01-12
