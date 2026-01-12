@@ -77,14 +77,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [v0.5.0] - TBD
+## [v0.5.0] - 2026-01-12
 
 ### Added
-- Message handlers for groups and channels
-- Logging middleware
-- Error handling middleware
-- Main bot entry point
-- Integration with AI services
+- **Middleware Layer**: Implemented logging and error handling middleware
+  - `LoggingMiddleware`: Logs all incoming Telegram updates, tracks performance metrics, and detects bot mentions
+  - `ErrorHandlerMiddleware`: Global exception handling with user-friendly error messages and graceful degradation
+- **Telegram Handlers**: Implemented message processing handlers
+  - `GroupMessageHandler`: Handles bot mentions in group chats, generates AI responses with reply buttons
+  - `ChannelCommentHandler`: Processes comments on channel posts with context-aware suggestions
+- **Main Bot Entry Point**: Created `src/bot/main.py` with complete bot initialization
+  - Aiogram Bot and Dispatcher setup
+  - Service initialization and dependency injection
+  - Middleware and handler registration
+  - Graceful shutdown handling
+  - Signal-based termination support
+- **Comprehensive Testing**: Added test suites for all new components
+  - Middleware tests with mock Telegram updates
+  - Handler tests with simulated bot interactions
+  - Main bot initialization and configuration tests
+
+### Changed
+- **Configuration**: Updated `bot_config.yaml` with middleware and handler settings
+- **Dependencies**: Added aiogram as core dependency for Telegram bot framework
+- **Project Structure**: Organized code into clear layers (core, clients, services, middleware, handlers)
+
+### Fixed
+- **Type Annotations**: Fixed mypy compliance issues in new components
+- **Code Formatting**: Applied black formatting to all new files
+- **Import Organization**: Ensured proper import ordering and grouping
+
+### Security
+- **Error Handling**: Added comprehensive error handling to prevent bot crashes
+- **Input Validation**: Improved validation of Telegram update data
+- **Graceful Degradation**: Bot continues running even when individual components fail
 
 ---
 
